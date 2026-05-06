@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900" role="img" aria-label="Effective Java cover">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0ea5e9"/>
+      <stop offset="1" stop-color="#1f2937"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="18" flood-color="#000" flood-opacity="0.22"/>
+    </filter>
+  </defs>
+  <rect width="600" height="900" fill="#f4f4f5"/>
+  <rect x="52" y="60" width="496" height="780" rx="26" fill="url(#bg)" filter="url(#shadow)"/>
+  <g opacity="0.18">
+    <circle cx="470" cy="170" r="90" fill="#ffffff"/>
+    <circle cx="470" cy="170" r="55" fill="#0ea5e9"/>
+  </g>
+  <text x="110" y="230" font-family="Segoe UI, system-ui, sans-serif" font-size="44" font-weight="800" fill="#ffffff">
+    Effective Java
+  </text>
+  <text x="110" y="280" font-family="Segoe UI, system-ui, sans-serif" font-size="22" fill="rgba(255,255,255,0.85)">
+    Joshua Bloch
+  </text>
+  <path d="M110 350h380" stroke="rgba(255,255,255,0.35)" stroke-width="6" stroke-linecap="round"/>
+  <g opacity="0.9">
+    <rect x="110" y="405" width="360" height="16" rx="8" fill="rgba(255,255,255,0.22)"/>
+    <rect x="110" y="440" width="330" height="14" rx="7" fill="rgba(255,255,255,0.16)"/>
+    <rect x="110" y="475" width="300" height="14" rx="7" fill="rgba(255,255,255,0.16)"/>
+    <rect x="110" y="510" width="260" height="14" rx="7" fill="rgba(255,255,255,0.16)"/>
+  </g>
+  <text x="110" y="780" font-family="Segoe UI, system-ui, sans-serif" font-size="18" fill="rgba(255,255,255,0.75)">
+    Bookstore edition
+  </text>
+</svg>

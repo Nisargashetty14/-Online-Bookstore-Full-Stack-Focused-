@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <link rel="stylesheet" href="/css/bookstore.css" />
+  </head>
+  <body>
+    <header class="site">
+      <div class="inner">
+        <a class="brand" href="/">📚 Bookstore</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/cart.html">Cart</a>
+        </nav>
+      </div>
+    </header>
+    <div class="wrap">
+      <h1>Checkout</h1>
+      <p class="muted">Demo only — no payment. Confirming will clear your cart and show an order id.</p>
+      <div id="msg"></div>
+      <p><button type="button" class="btn" id="go">Place order</button></p>
+      <p><a href="/cart.html">← Back to cart</a></p>
+    </div>
+    <script src="/js/api.js"></script>
+    <script>
+      const msg = document.getElementById("msg");
+      document.getElementById("go").addEventListener("click", async () => {
+        msg.innerHTML = "";
+        const res = await api.checkout();
+        if (res.ok) {
+          msg.innerHTML = `<div class="notice">
+            <strong>${escapeHtml(res.message)}</strong><br />
+            Order ID: <code>${escapeHtml(res.orderId)}</code>
+          </div>`;
+        } else {
+          msg.innerHTML = `<div class="notice error">${escapeHtml(res.message || "Checkout failed")}</div>`;
+        }
+      });
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s == null ? "" : String(s);
+        return d.innerHTML;
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Bookstore</title>
+    <link rel="stylesheet" href="/css/bookstore.css" />
+  </head>
+  <body>
+    <header class="site">
+      <div class="inner">
+        <a class="brand" href="/">📚 Bookstore</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/cart.html">Cart</a>
+          <a href="/checkout.html">Checkout</a>
+        </nav>
+      </div>
+    </header>
+    <section class="hero">
+      <div class="inner">
+        <div class="copy">
+          <h1>Find your next great read</h1>
+          <p class="muted">Browse the catalog, add to cart, and checkout (demo).</p>
+        </div>
+        <a class="cover" href="/book.html?id=1" aria-label="View featured book">
+          <img src="/img/wise-steps-for-success.png" alt="Featured book cover" width="220" height="330" onerror="this.onerror=null;this.src='/img/cover.svg';" />
+        </a>
+      </div>
+    </section>
+    <div class="wrap">
+      <div class="toolbar">
+        <input type="search" id="search" placeholder="Search by title…" aria-label="Search books" />
+        <button type="button" class="btn secondary" id="clearBtn">Clear</button>
+      </div>
+      <div id="err" class="notice error" style="display: none"></div>
+      <div class="book-grid" id="grid"></div>
+    </div>
+    <script src="/js/api.js"></script>
+    <script>
+      const grid = document.getElementById("grid");
+      const err = document.getElementById("err");
+      const search = document.getElementById("search");
+
+      function showError(msg) {
+        err.textContent = msg;
+        err.style.display = "block";
+      }
+      function hideError() {
+        err.style.display = "none";
+      }
+
+      async function render(q) {
+        hideError();
+        grid.innerHTML = '<p class="muted">Loading…</p>';
+        try {
+          const books = await api.books(q || undefined);
+          if (!books.length) {
+            grid.innerHTML = '<p class="muted">No books found.</p>';
+            return;
+          }
+          grid.innerHTML = books
+            .map(
+              (b) => `
+            <article class="book-card">
+              <a href="/book.html?id=${b.id}">
+                <img src="${b.imageUrl || "/img/cover.svg"}" alt="" loading="lazy" width="220" height="330" onerror="this.onerror=null;this.src='/img/cover.svg';" />
+              </a>
+              <div class="body">
+                <h2><a href="/book.html?id=${b.id}">${escapeHtml(b.title)}</a></h2>
+                <p class="author">${escapeHtml(b.author)}</p>
+                <p class="price">${money(b.price)}</p>
+              </div>
+            </article>`
+            )
+            .join("");
+        } catch (e) {
+          showError(e.message || "Something went wrong.");
+          grid.innerHTML = "";
+        }
+      }
+
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s;
+        return d.innerHTML;
+      }
+
+      let t;
+      search.addEventListener("input", () => {
+        clearTimeout(t);
+        t = setTimeout(() => render(search.value.trim()), 280);
+      });
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        search.value = "";
+        render();
+      });
+
+      render();
+    </script>
+  </body>
+</html>

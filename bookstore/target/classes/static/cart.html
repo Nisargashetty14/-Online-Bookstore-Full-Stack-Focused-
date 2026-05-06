@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cart</title>
+    <link rel="stylesheet" href="/css/bookstore.css" />
+  </head>
+  <body>
+    <header class="site">
+      <div class="inner">
+        <a class="brand" href="/">📚 Bookstore</a>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/cart.html">Cart</a>
+          <a href="/checkout.html">Checkout</a>
+        </nav>
+      </div>
+    </header>
+    <div class="wrap">
+      <h1>Your cart</h1>
+      <div id="err" class="notice error" style="display: none"></div>
+      <div id="box"></div>
+    </div>
+    <script src="/js/api.js"></script>
+    <script>
+      const box = document.getElementById("box");
+      const err = document.getElementById("err");
+
+      async function refresh() {
+        err.style.display = "none";
+        try {
+          const { items, total } = await api.cart();
+          if (!items.length) {
+            box.innerHTML =
+              '<p class="muted">Your cart is empty. <a href="/">Browse books</a></p>';
+            return;
+          }
+          box.innerHTML = `
+            <table class="cart-table">
+              <thead><tr><th>Title</th><th>Author</th><th>Qty</th><th>Line</th><th></th></tr></thead>
+              <tbody>
+                ${items
+                  .map(
+                    (l) => `
+                  <tr data-id="${l.bookId}">
+                    <td>${escapeHtml(l.title)}</td>
+                    <td>${escapeHtml(l.author)}</td>
+                    <td>${l.quantity}</td>
+                    <td>${money(l.lineTotal)}</td>
+                    <td><button type="button" class="btn secondary rm" data-id="${l.bookId}">Remove</button></td>
+                  </tr>`
+                  )
+                  .join("")}
+                <tr class="total-row"><td colspan="3">Total</td><td colspan="2">${money(total)}</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:1rem"><a class="btn" href="/checkout.html">Proceed to checkout</a></p>`;
+          box.querySelectorAll(".rm").forEach((btn) => {
+            btn.addEventListener("click", async () => {
+              const bid = btn.getAttribute("data-id");
+              await api.removeFromCart(bid);
+              refresh();
+            });
+          });
+        } catch (e) {
+          err.textContent = e.message || "Error";
+          err.style.display = "block";
+        }
+      }
+
+      function escapeHtml(s) {
+        const d = document.createElement("div");
+        d.textContent = s == null ? "" : String(s);
+        return d.innerHTML;
+      }
+
+      refresh();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+com\example\bookstore\model\CartLine.class
+com\example\bookstore\model\Book.class
+com\example\bookstore\web\CartController.class
+com\example\bookstore\repository\ReviewRepository.class
+com\example\bookstore\BookstoreApplication.class
+com\example\bookstore\dto\CartResponse.class
+com\example\bookstore\dto\CheckoutResponse.class
+com\example\bookstore\model\Review.class
+com\example\bookstore\web\BookController.class
+com\example\bookstore\web\CheckoutController.class
+com\example\bookstore\web\ReviewController.class
+com\example\bookstore\repository\BookRepository.class
+com\example\bookstore\dto\CreateReviewRequest.class
+com\example\bookstore\dto\AddToCartRequest.class
